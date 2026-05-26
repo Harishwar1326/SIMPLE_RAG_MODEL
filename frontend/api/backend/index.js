@@ -36,7 +36,27 @@ app.get("/", (_req, res) => {
   });
 });
 
+app.get("/api/backend", (_req, res) => {
+  res.json({
+    message: "Simple Naive RAG backend is running.",
+    langsmithEnabled:
+      process.env.LANGSMITH_TRACING === "true" &&
+      Boolean(process.env.LANGSMITH_API_KEY),
+    vectorStore: getVectorStoreStatus(),
+  });
+});
+
 app.get("/health", (_req, res) => {
+  res.json({
+    ok: true,
+    langsmithEnabled:
+      process.env.LANGSMITH_TRACING === "true" &&
+      Boolean(process.env.LANGSMITH_API_KEY),
+    vectorStore: getVectorStoreStatus(),
+  });
+});
+
+app.get("/api/backend/health", (_req, res) => {
   res.json({
     ok: true,
     langsmithEnabled:
@@ -48,6 +68,8 @@ app.get("/health", (_req, res) => {
 
 app.use("/", documentRoutes);
 app.use("/", ragRoutes);
+app.use("/api/backend", documentRoutes);
+app.use("/api/backend", ragRoutes);
 
 // Return JSON errors so the frontend can show readable messages.
 app.use((error, _req, res, _next) => {
