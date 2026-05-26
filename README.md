@@ -138,3 +138,18 @@ The code is organized so the backend lives under `frontend/api/backend`, which m
 For Vercel, the `frontend/vercel.json` file keeps the SPA rewrite in place while the `/api/backend/*` routes are served from the `frontend/api/backend` folder.
 
 For production deployment, keep the same route contract and provide the environment variables above in the hosting dashboard.
+
+## Vercel Deployment (Recommended)
+
+1. Import this GitHub repository in Vercel.
+2. In project settings, set **Root Directory** to `frontend`.
+3. Build settings:
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
+4. Add environment variables from the **Environment Variables** section in this README.
+5. Deploy.
+
+After deployment, verify:
+
+- `GET /api/backend/health` returns `{ ok: true, ... }`
+- Frontend requests to `/api/backend/*` succeed without CORS changes
